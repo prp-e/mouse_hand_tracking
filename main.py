@@ -42,9 +42,12 @@ with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5, m
         image.flags.writeable = True
         landmark_list = []
         if results.multi_hand_landmarks:
-            landmark_list = find_landmarks(image=image, results=results, draw=True)
+            landmark_list = find_landmarks(image=image, results=results, draw=False)
             fingers = fingers_up(landmark_list)
-            print(fingers)
+            
+            if fingers[0] == 1 and fingers[1:4] == [0, 0, 0]:
+                cv2.circle(image, (landmark_list[8][1], landmark_list[8][2]), 25, (0, 255, 0), cv2.FILLED)
+                
             
         cv2.imshow("Camera No. 1", cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
         if cv2.waitKey(1) & 0xff == ord('q'):
