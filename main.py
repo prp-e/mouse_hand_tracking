@@ -47,6 +47,7 @@ with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5, m
             
             if fingers[0] == 1 and fingers[1:4] == [0, 0, 0]:
                 cv2.circle(image, (landmark_list[8][1], landmark_list[8][2]), 25, (0, 255, 0), cv2.FILLED)
+                autopy.mouse.move(landmark_list[8][1], landmark_list[8][2])
                 
             
         cv2.imshow("Camera No. 1", cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
