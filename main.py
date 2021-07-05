@@ -5,7 +5,7 @@ import mediapipe as mp
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 
-camera = cv2.VideoCapture(1)
+camera = cv2.VideoCapture(0)
 
 def find_landmarks(image, results, draw=False):
     landmark_list = []
