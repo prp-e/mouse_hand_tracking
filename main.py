@@ -1,3 +1,4 @@
+import autopy 
 import cv2 
 import mediapipe as mp 
 
@@ -8,11 +9,12 @@ camera = cv2.VideoCapture(1)
 
 def find_landmarks(image, results, draw=False):
     landmark_list = []
+    tip_ids = [8, 12, 16, 20]
     for id, landmark in enumerate(results.multi_hand_landmarks[0].landmark):
                 h, w, c = image.shape
                 cx, cy = int(landmark.x * w), int(landmark.y * h)
                 landmark_list.append([id, cx, cy])
-                if id % 4 == 0 and draw:
+                if id in tip_ids and draw:
                     cv2.circle(image, (cx, cy), 15, (255, 0, 200), cv2.FILLED)
     
     return landmark_list
@@ -40,7 +42,7 @@ with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5, m
         image.flags.writeable = True
         landmark_list = []
         if results.multi_hand_landmarks:
-            landmark_list = find_landmarks(image=image, results=results)
+            landmark_list = find_landmarks(image=image, results=results, draw=True)
             fingers = fingers_up(landmark_list)
             print(fingers)
             
