@@ -6,12 +6,13 @@ mp_hands = mp.solutions.hands
 
 camera = cv2.VideoCapture(1)
 
-def find_landmarks(image, results, landmark_list):
+def find_landmarks(image, results, draw=False):
+    landmark_list = []
     for id, landmark in enumerate(results.multi_hand_landmarks[0].landmark):
                 h, w, c = image.shape
                 cx, cy = int(landmark.x * w), int(landmark.y * h)
                 landmark_list.append([id, cx, cy])
-                if id % 4 == 0:
+                if id % 4 == 0 and draw:
                     cv2.circle(image, (cx, cy), 15, (255, 0, 200), cv2.FILLED)
     
     return landmark_list
@@ -27,7 +28,7 @@ with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5, m
         image.flags.writeable = True
         landmark_list = []
         if results.multi_hand_landmarks:
-            find_landmarks(image=image, results=results, landmark_list=landmark_list)
+            landmark_list = find_landmarks(image=image, results=results)
             
         cv2.imshow("Camera No. 1", cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
         if cv2.waitKey(1) & 0xff == ord('q'):
