@@ -17,6 +17,18 @@ def find_landmarks(image, results, draw=False):
     
     return landmark_list
 
+def fingers_up(landmark_list):
+    tip_ids = [8, 12, 16, 20]
+    fingers = []
+    for i in range(4):
+        if landmark_list[tip_ids[i]][2] < landmark_list[tip_ids[i] - 2][2]:
+            fingers.append(1)
+        else:
+            fingers.append(0)
+    
+    return fingers
+            
+
 
 with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5, max_num_hands = 1) as hands:
     while camera.isOpened():
@@ -29,6 +41,8 @@ with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5, m
         landmark_list = []
         if results.multi_hand_landmarks:
             landmark_list = find_landmarks(image=image, results=results)
+            fingers = fingers_up(landmark_list)
+            print(fingers)
             
         cv2.imshow("Camera No. 1", cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
         if cv2.waitKey(1) & 0xff == ord('q'):
