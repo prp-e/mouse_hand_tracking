@@ -6,7 +6,6 @@ mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 
 camera = cv2.VideoCapture(1)
-mouse = Controller()
 
 def find_landmarks(image, results, draw=False):
     landmark_list = []
